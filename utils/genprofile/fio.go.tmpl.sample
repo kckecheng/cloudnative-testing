@@ -1,0 +1,14 @@
+[global]
+filename={{ .filename }}
+size={{ .size }}
+
+ioengine={{ .ioengine }}
+
+iodepth={{ .iodepth }}
+
+time_based=1
+runtime={{ .runtime }}
+
+[{{ .ioengine }}-{{ .rw }}-{{ .bs }}]
+rw={{ .rw }}
+bs={{ .bs }}
