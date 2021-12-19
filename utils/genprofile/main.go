@@ -16,18 +16,22 @@ import (
 var (
 	tmplPath   string
 	optPath    string
+	namePrefix string
 	nameFields []string
 
 	rootCmd = &cobra.Command{
 		Use:   "genprofile",
 		Short: "Create profiles based on a template and an option file",
-		Long: `Create test profiles, e.g. fio profiles, based on a template file(which is in go text/template syntax)
+		Long: `
+		Create test profiles, e.g. fio profiles, based on a template file(which is in go text/template syntax)
 		and an option file(which is based on yaml).
+
 		Option files defined in yaml only support key value pairs and list as below:
 		key1: value1
 		key2:
 		- value1
 		- value2 
+		...
 		`,
 		Run: func(cmd *cobra.Command, args []string) {
 			options, err := extractOptions(optPath)
@@ -45,7 +49,11 @@ var (
 					}
 					output = strings.Join(fileds, "-") + ".profile"
 				} else {
-					output = fmt.Sprintf("test_%d.profile", i)
+					output = fmt.Sprintf("test-%d.profile", i)
+				}
+
+				if namePrefix != "" {
+					output = fmt.Sprintf("%s-%s", namePrefix, output)
 				}
 
 				if err := ioutil.WriteFile(output, bytes, 0644); err != nil {
@@ -59,6 +67,7 @@ var (
 func init() {
 	rootCmd.Flags().StringVarP(&tmplPath, "template", "t", "", "profile template file path")
 	rootCmd.Flags().StringVarP(&optPath, "option", "o", "", "option definition file path")
+	rootCmd.Flags().StringVarP(&namePrefix, "prefix", "p", "", "profile file name prefix")
 	rootCmd.Flags().StringArrayVarP(&nameFields, "fields", "f", []string{}, "fields based on which the output file name is formed")
 	rootCmd.MarkFlagRequired("template")
 	rootCmd.MarkFlagRequired("option")
