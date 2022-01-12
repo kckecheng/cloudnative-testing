@@ -1,18 +1,33 @@
 ---
 filename: /mnt/fio.out
 size: 1g
-iodepth: 1
 runtime: 300
+
+ioengine:
+- sync
+- psync
+- vsync
+- pvsync2
+- io_uring
+- libaio
 
 rw:
 - read
 - write
+- randread
+- randwrite
+- rw
+- randrw
 
-ioengine:
-- sync
-- libaio
+direct:
+- 0
+- 1
 
 bs:
 - 4k
 - 128k
 - 4m
+
+iodepth:
+- 1
+- 16

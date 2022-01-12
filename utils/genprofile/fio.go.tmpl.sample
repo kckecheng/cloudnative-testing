@@ -6,9 +6,11 @@ ioengine={{ .ioengine }}
 
 iodepth={{ .iodepth }}
 
+direct={{ .direct }}
+
 time_based=1
 runtime={{ .runtime }}
 
-[{{ .ioengine }}-{{ .rw }}-{{ .bs }}]
+[{{ .ioengine }}-{{ .rw }}-{{ .bs }}-{{ .direct }}-{{ .iodepth }}]
 rw={{ .rw }}
 bs={{ .bs }}
